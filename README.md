@@ -4,6 +4,7 @@ This is the schedule for the MIT OpenCourseWare 18.700 Linear Algebra course. Th
 https://ocw.mit.edu/courses/18-700-linear-algebra-fall-2013/ 
 
 Here is the description of the course provided on the website:
+
 "This course offers a rigorous treatment of linear algebra, including vector spaces, systems of linear equations, bases, linear independence, matrices, determinants, eigenvalues, inner products, quadratic forms, and canonical forms of matrices. Compared with 18.06 Linear Algebra, more emphasis is placed on theory and proofs."
 
 The PDF was compiled from LaTeX code in Overleaf, and contains links to notes, chapters, and assignments. You can also compile the PDF yourself from the latex code provided.
