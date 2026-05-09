@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage{array}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{raster}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xstring}
+
+\setlength{\parindent}{0pt}
+\setlength{\headheight}{14pt}
+\renewcommand{\arraystretch}{1.2}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=1.5em
+
+\newif\ifBuildMainFolderLinks
+\ifdefined\BuildMainFolderLinks
+    \BuildMainFolderLinkstrue
+\else
+    \BuildMainFolderLinksfalse
+\fi
+
+\newcommand{\ResolveSchedulePath}[2]{%
+    \ifBuildMainFolderLinks
+        \IfBeginWith{#1}{../}{\StrBehind{#1}{../}[#2]}{\def#2{#1}}%
+    \else
+        \def#2{#1}%
+    \fi
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{18.700 Linear Algebra}}
+\rhead{\textbf{Fall 2013}}
+\cfoot{\thepage}
+
+\definecolor{mainblue}{RGB}{38,70,83}
+\definecolor{softblue}{RGB}{233,242,248}
+\definecolor{softrose}{RGB}{250,238,239}
+
+\newcommand{\CardText}{%
+    \raggedright
+    \hyphenpenalty=10000
+    \exhyphenpenalty=10000
+    \emergencystretch=1.5em
+}
+
+\newcommand{\StartNote}[1]{%
+    {\footnotesize\textcolor{mainblue!90!black}{\textbf{Start:} #1}\par}%
+}
+
+\newcommand{\DueNote}[1]{%
+    {\footnotesize\textcolor{orange!80!black}{\textbf{Due:} #1}\par}%
+}
+
+\newcommand{\ExamNote}[1]{%
+    {\footnotesize\textcolor{red!65!black}{\textbf{Exam:} #1}\par}%
+}
+
+\newcommand{\ReadNote}[1]{%
+    {\footnotesize\textcolor{black!80}{\textbf{Read:} #1}\par}%
+}
+
+\newcommand{\ReviewNote}[1]{%
+    {\footnotesize\textcolor{green!45!black}{\textbf{Review:} #1}\par}%
+}
+
+\newcommand{\PDFLink}[3]{%
+    \begingroup
+    \ResolveSchedulePath{#1}{\resolvedpath}%
+    \edef\pdfpath{\pdfescapestring{\resolvedpath}}%
+    \leavevmode
+    \pdfstartlink
+        attr{/Border[0 0 0]}
+        user{/Subtype /Link /A << /S /GoToR /F (\pdfpath) /D [\number\numexpr#2-1\relax /Fit] >> }%
+    #3%
+    \pdfendlink
+    \endgroup
+}
+
+\newcommand{\OCWCourse}[1]{%
+    \leavevmode
+    \pdfstartlink attr{/Border[0 0 0]} user{/Subtype /Link /A << /S /URI /URI (https://ocw.mit.edu/courses/18-700-linear-algebra-fall-2013/) >> }%
+    #1%
+    \pdfendlink
+}
+
+\newcommand{\TextbookLink}[2]{%
+    \PDFLink{../Textbook and Notes/Linear Algebra Done Right (Axler).pdf}{\number\numexpr#1+14\relax}{#2}%
+}
+
+\newcommand{\NoteLink}[2]{%
+    \PDFLink{../Textbook and Notes/#1}{1}{#2}%
+}
+
+\newcommand{\ProblemSetLink}[2]{%
+    \PDFLink{../Problem Sets/#1}{1}{#2}%
+}
+
+\newcommand{\FinalBlock}[2]{%
+    \begin{tcolorbox}[
+        colback=softrose,
+        colframe=red!55!black,
+        boxrule=0.6pt,
+        arc=1.8mm,
+        left=1.8mm,
+        right=1.8mm,
+        top=1.6mm,
+        bottom=1.6mm,
+        enhanced,
+        valign=top,
+        before upper={\CardText}
+    ]
+    {\scriptsize\textbf{\textcolor{red!65!black}{#1}}}\par
+    \vspace{0.8mm}
+    {\small\bfseries #2}\par
+    \vspace{1.8mm}
+    \ReviewNote{Comprehensive final review}
+    \ExamNote{Final exam at the end of the course}
+    \end{tcolorbox}%
+}
+
+\newcommand{\ScheduleCard}[3]{%
+    \begin{tcolorbox}[
+        colback=softblue,
+        colframe=mainblue!75,
+        boxrule=0.6pt,
+        arc=1.8mm,
+        left=1.8mm,
+        right=1.8mm,
+        top=1.6mm,
+        bottom=1.6mm,
+        enhanced,
+        valign=top,
+        before upper={\CardText}
+    ]
+    {\scriptsize\textbf{\textcolor{mainblue!90!black}{#1}}}\par
+    \vspace{0.8mm}
+    {\small\bfseries #2}\par
+    \vspace{1.8mm}
+    #3
+    \end{tcolorbox}%
+}
+
+\newenvironment{WeekSection}[1]{%
+    \begin{tcolorbox}[
+        colback=white,
+        colframe=mainblue!70,
+        colbacktitle=mainblue!10,
+        coltitle=mainblue,
+        title=\textbf{#1},
+        boxrule=0.7pt,
+        arc=2mm,
+        left=2mm,
+        right=2mm,
+        top=2mm,
+        bottom=2mm
+    ]
+    \begin{tcbraster}[
+        raster columns=3,
+        raster equal height=rows,
+        raster column skip=2mm,
+        raster left skip=0pt,
+        raster right skip=0pt,
+        nobeforeafter
+    ]
+}{%
+    \end{tcbraster}
+    \end{tcolorbox}
+    \vspace{1.5mm}
+}
+
+\begin{document}
+
+\begin{tcolorbox}[
+    colback=mainblue,
+    colframe=mainblue,
+    arc=3mm,
+    boxrule=0pt
+]
+\centering
+{\Huge\bfseries\color{white} \OCWCourse{18.700 Linear Algebra Schedule Tracker}}
+
+\vspace{1mm}
+{\large\color{white} Based on the MIT OpenCourseWare Fall 2013 calendar}
+\end{tcolorbox}
+
+\vspace{0.35cm}
+
+\begin{tcolorbox}[
+    colback=softblue,
+    colframe=mainblue!70,
+    arc=2mm
+]
+{\footnotesize\textbf{Reading Notes:} \NoteLink{Finite Fields.pdf}{F} = Finite Fields, \NoteLink{One Sided Inverses.pdf}{OSI} = One-Sided Inverses, \NoteLink{Gaussian Elimination.pdf}{GE} = Gaussian Elimination, \NoteLink{Orthogonal Bases.pdf}{OB} = Orthogonal Bases, \NoteLink{Proof Of The Spectral Theorem.pdf}{ST} = Spectral Theorem, \NoteLink{Generalized Eigenspaces.pdf}{EIG} = Generalized Eigenspaces}
+\end{tcolorbox}
+
+\vspace{0.25cm}
+
+\begin{WeekSection}{Week 1}
+\ScheduleCard{Lecture 1}{Definition of Vector Spaces; Properties}{\ReadNote{\TextbookLink{2}{Axler Ch. 1, pp. 2--12}}}
+\ScheduleCard{Lecture 2}{Subspaces; Sums and Direct Sums}{\ReadNote{\TextbookLink{18}{Axler Ch. 1, pp. 13--18}}\StartNote{\ProblemSetLink{P1.pdf}{Problem Set 1}}}
+\ScheduleCard{Lecture 3}{Span; Independence; Bases}{\ReadNote{\TextbookLink{28}{Axler Ch. 2, pp. 21--31}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 2}
+\ScheduleCard{Lecture 4}{Bases and Dimension}{\ReadNote{\TextbookLink{39}{Axler Ch. 2, pp. 31--34}}\DueNote{\ProblemSetLink{P1.pdf}{Problem Set 1}}\StartNote{\ProblemSetLink{P2.pdf}{Problem Set 2}}}
+\ScheduleCard{Lecture 5}{Linear Maps; Null Space / Range}{\ReadNote{\TextbookLink{52}{Axler Ch. 3, pp. 38--47}}}
+\ScheduleCard{Lecture 6}{Matrices; Invertibility}{\ReadNote{\TextbookLink{69}{Axler Ch. 3, pp. 48--58}}\DueNote{\ProblemSetLink{P2.pdf}{Problem Set 2}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 3}
+\ScheduleCard{Lecture 7}{Exam 1 on Chapters 1--3}{\ExamNote{First in-course exam block}}
+\ScheduleCard{Lecture 8}{Finite Fields; Systems of Equations}{\ReadNote{\NoteLink{Finite Fields.pdf}{F}, \NoteLink{Gaussian Elimination.pdf}{GE}, \NoteLink{One Sided Inverses.pdf}{OSI}}\StartNote{\ProblemSetLink{P3.pdf}{Problem Set 3}}}
+\ScheduleCard{Lecture 9}{Gaussian Elimination}{\ReadNote{\NoteLink{Gaussian Elimination.pdf}{GE}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 4}
+\ScheduleCard{Lecture 10}{Counting over $F_p$; Invariant Subspaces}{\ReadNote{\TextbookLink{133}{Axler Ch. 5, pp. 75--79}; \NoteLink{Finite Fields.pdf}{F}}\DueNote{\ProblemSetLink{P3.pdf}{Problem Set 3}}\StartNote{\ProblemSetLink{P4.pdf}{Problem Set 4}}}
+\ScheduleCard{Lecture 11}{Finding Eigenvectors}{\ReadNote{\TextbookLink{143}{Axler Ch. 5, pp. 80--81}}\StartNote{\ProblemSetLink{P5.pdf}{Problem Set 5}}}
+\ScheduleCard{Lecture 12}{Upper Triangular and Diagonal Matrices}{\ReadNote{\TextbookLink{154}{Axler Ch. 5, pp. 81--90}}\DueNote{\ProblemSetLink{P4.pdf}{Problem Set 4}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 5}
+\ScheduleCard{Lecture 13}{Eigenvectors over $\mathbf{R}$ and $F_p$}{\ReadNote{\TextbookLink{163}{Axler Ch. 5, pp. 91--93}; \NoteLink{Finite Fields.pdf}{F}}\DueNote{\ProblemSetLink{P5.pdf}{Problem Set 5}}}
+\ScheduleCard{Lecture 14}{Exam 2 on Chapters 1--5}{\ExamNote{Second in-course exam block}}
+\ScheduleCard{Lecture 15}{Inner Products; Gram--Schmidt}{\ReadNote{\TextbookLink{182}{Axler Ch. 6, pp. 97--111}; \NoteLink{Orthogonal Bases.pdf}{OB}}\StartNote{\ProblemSetLink{P6.pdf}{Problem Set 6}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 6}
+\ScheduleCard{Lecture 16}{Orthogonal Projection; Minimization}{\ReadNote{\TextbookLink{211}{Axler Ch. 6, pp. 111--116}}}
+\ScheduleCard{Lecture 17}{Adjoint; Self-Adjoint; Normal}{\ReadNote{\TextbookLink{228}{Axler Ch. 7, pp. 127--132}}\DueNote{\ProblemSetLink{P6.pdf}{Problem Set 6}}\StartNote{\ProblemSetLink{P7.pdf}{Problem Set 7}}}
+\ScheduleCard{Lecture 18}{Spectral Theorem}{\ReadNote{\TextbookLink{243}{Axler Ch. 7, pp. 132--144}; \NoteLink{Proof Of The Spectral Theorem.pdf}{ST}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 7}
+\ScheduleCard{Lecture 19}{Positive Operators}{\ReadNote{\TextbookLink{251}{Axler Ch. 7, pp. 144--147}}\DueNote{\ProblemSetLink{P7.pdf}{Problem Set 7}}}
+\ScheduleCard{Lecture 20}{Isometries; Polar Decomposition}{\ReadNote{\TextbookLink{258}{Axler Ch. 7, pp. 147--157}}}
+\ScheduleCard{Lecture 21}{Exam 3 on Chapters 1--7}{\ExamNote{Third in-course exam block}\StartNote{\ProblemSetLink{P8.pdf}{Problem Set 8}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 8}
+\ScheduleCard{Lecture 22}{Generalized Eigenspaces}{\ReadNote{\TextbookLink{298}{Axler Ch. 8, pp. 163--168}; \NoteLink{Generalized Eigenspaces.pdf}{EIG}}\StartNote{\ProblemSetLink{P9.pdf}{Problem Set 9}}}
+\ScheduleCard{Lecture 23}{Generalized Eigenspace Decomposition}{\ReadNote{\TextbookLink{308}{Axler Ch. 8, pp. 173--178}; \NoteLink{Generalized Eigenspaces.pdf}{EIG}}\DueNote{\ProblemSetLink{P8.pdf}{Problem Set 8}}}
+\ScheduleCard{Lecture 24}{Characteristic Polynomial}{\ReadNote{\TextbookLink{311}{Axler Ch. 8, pp. 168--173}}\DueNote{\ProblemSetLink{P9.pdf}{Problem Set 9}}}
+\end{WeekSection}
+
+\begin{WeekSection}{Week 9}
+\ScheduleCard{Lecture 25}{Determinant}{\ReadNote{\TextbookLink{354}{Axler Ch. 10}}}
+\ScheduleCard{Lecture 26}{Trace; Canonical Commutation Relations}{\ReadNote{\TextbookLink{326}{Axler Ch. 10}}}
+\FinalBlock{Final Block}{Course Review and Final Exam}
+\end{WeekSection}
+
+\end{document}
